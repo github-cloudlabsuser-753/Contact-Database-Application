@@ -2,14 +2,11 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "appServicePlanName": {
-      "value": "salonsa-app-service-plan"
+    "serverFarmName": {
+      "value": "salonsa-serverFarmName"
     },
-    "appServicePlanSku": {
-      "value": "salonsa-app-service-plan-sku"
-    },
-    "appServiceName": {
-      "value": "salonsa-app-service"
+    "webAppName": {
+      "value": "salonsa-webAppName"
     }
   }
 }

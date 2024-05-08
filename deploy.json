@@ -1,24 +1,20 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "$schema": "
+https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "appServicePlanName": {
+    "webAppName": {
       "type": "string",
+      "defaultValue": "myWebApp",
       "metadata": {
-        "description": "The name of the App Service Plan."
+        "description": "Name for the Web App"
       }
     },
-    "appServicePlanSku": {
+    "serverFarmName": {
       "type": "string",
-      "defaultValue": "F1",
+      "defaultValue": "myServerFarm",
       "metadata": {
-        "description": "The SKU of the App Service Plan."
-      }
-    },
-    "appServiceName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the App Service."
+        "description": "Name for the Server Farm"
       }
     }
   },
@@ -26,26 +22,25 @@
     {
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2018-02-01",
-      "name": "[parameters('appServicePlanName')]",
+      "name": "[parameters('serverFarmName')]",
       "location": "[resourceGroup().location]",
       "sku": {
-        "name": "[parameters('appServicePlanSku')]"
-      }
+        "name": "F1",
+        "capacity": 1
+      },
+      "kind": "app"
     },
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
-      "name": "[parameters('appServiceName')]",
+      "name": "[parameters('webAppName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverFarmName'))]"
       ],
+      "kind": "app",
       "properties": {
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
-        "siteConfig": {
-          "netFrameworkVersion": "v4.0",
-          "alwaysOn": false
-        }
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverFarmName'))]"
       }
     }
   ]
